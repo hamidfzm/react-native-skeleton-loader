@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "react-native-skeleton-loader": [
+      "@hamidfzm/react-native-skeleton-loader": [
         "./src/index"
       ]
     },
@@ -11,9 +11,7 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react",
-    "lib": [
-      "esnext"
-    ],
+    "lib": ["esnext", "dom"],
     "module": "esnext",
     "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
@@ -28,7 +26,7 @@
     "target": "esnext"
   },
   "exclude": [
-    "node_modules",
+    "lib/**/*",
     "example"
   ]
 }
