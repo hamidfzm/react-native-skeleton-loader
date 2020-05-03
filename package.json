@@ -1,6 +1,6 @@
 {
   "name": "@hamidfzm/react-native-skeleton-loader",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Simple skeleton loaders for React Native",
   "main": "lib/commonjs/index.js",
   "module": "lib/module/index.js",
