@@ -3,12 +3,7 @@ import { Animated, View } from 'react-native';
 
 import { SkeletonProps } from './types';
 import { useStyles } from './hooks';
-
-const Types = {
-  TEXT: 'text',
-  CIRCLE: 'circle',
-  RECT: 'rect',
-};
+import styles from './styles';
 
 const Skeleton: React.FC<SkeletonProps> = ({
   children,
@@ -51,7 +46,7 @@ const Skeleton: React.FC<SkeletonProps> = ({
   const child: any =
     childrenArray.length > 0 ? childrenArray[0] : <React.Fragment />;
 
-  const styles = useStyles({
+  const dynamicStyles = useStyles({
     color,
     loading,
     textBorderRadius,
@@ -65,7 +60,7 @@ const Skeleton: React.FC<SkeletonProps> = ({
         style: [child.props.style, { opacity: loading ? 0 : 1 }],
       })}
       <View style={styles.skeletonContainer}>
-        {new Array(lines).fill(0).map((_, index) => {
+        {[...Array(lines)].map((_, index) => {
           let calculatedWidth = calculateVariance(
             width || childLayout.width,
             widthVariance
@@ -75,16 +70,29 @@ const Skeleton: React.FC<SkeletonProps> = ({
             heightVariance
           );
           calculatedHeight /= lines;
-          if (type === Types.TEXT) calculatedHeight -= textVerticalPadding * 2;
 
+          let typeStyle = {};
+          switch (type) {
+            case 'text':
+              calculatedHeight -= textVerticalPadding * 2;
+              typeStyle = dynamicStyles.text;
+              break;
+
+            case 'circle':
+              typeStyle = styles.circle;
+              break;
+
+            case 'rect':
+              typeStyle = dynamicStyles.rect;
+              break;
+          }
           return (
             <Animated.View
               key={index}
               style={[
-                styles.base,
-                type === Types.TEXT && styles.text,
-                type === Types.RECT && styles.rect,
-                type === Types.CIRCLE && styles.circle,
+                dynamicStyles.base,
+                typeStyle,
+                // eslint-disable-next-line react-native/no-inline-styles
                 {
                   opacity: loading ? fadeAnim : 0,
                   width: calculatedWidth,
@@ -103,4 +111,4 @@ const calculateVariance = (size: number, variance: number) => {
   return size - size * (Math.random() * (variance / 100.0));
 };
 
-export default Skeleton;
+export default React.memo(Skeleton);
